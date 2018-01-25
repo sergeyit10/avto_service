@@ -1,0 +1,30 @@
+<!-- BEGIN: main -->
+<table class="servers">
+    <!-- BEGIN: server -->
+     <tr><td><h2>Результаты поиска по серверу</h2></td></tr>
+     <tr><td>Время запроса на сервер {SERVER.ID} = {SERVER.TIME}</td></tr>
+     <tr><td>Кол-во строк = {SERVER.COUNT_ROW}</td></tr>
+     <tr><td>
+            <table class="rows">
+                <tr>
+                    <th>Id</th>
+                    <th>Название</th>
+                    <th>Цена (руб.)</th>
+                    <th>Доставка</th>
+                </tr>
+                <!-- BEGIN: row -->
+                <tr>
+                    <td class="a_center">{PRODUCT.ID}</td>
+                    <td>{PRODUCT.NAME}</td>
+                    <td class="a_center">{PRODUCT.PRICE}</td>
+                    <td class="a_center">{PRODUCT.DELIV}</td>
+                </tr>
+                <!-- END: row --> 
+            </table> 
+             </td></tr>
+    <!-- END: server -->
+</table>
+<!-- BEGIN: error -->
+<p class="error">Товары не найдены</p>
+<!-- END: error --> 
+<!-- END: main -->

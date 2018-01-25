@@ -4,41 +4,22 @@
 		<title>Получение каталога</title>
 		<link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
 		<link href="css/style.css" type="text/css" rel="stylesheet" />
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/function.js"></script>
 	</head>
 	<body>
 		<div class="content">
 		<h1>Каталог</h1>
-		<table class="servers">
-			<!-- НАЧАЛО результат с сервера N -->
-			<!-- BEGIN: server -->
-			 <tr><td>Результаты поиска по серверу </td></tr>
-			 <tr><td>Время запроса на сервер {SERVER.ID} = {SERVER.TIME}</td></tr>
-			 <tr><td>Кол-во строк = {SERVER.COUNT_ROW}</td></tr>
-			 <tr><td>
-					<table class="rows">
-						<tr>
-							<th>Id</th>
-							<th>Название</th>
-							<th>Цена (руб.)</th>
-							<th>Доставка</th>
-						</tr>
-						<!-- BEGIN: row -->
-						<tr>
-							<td class="a_center">{PRODUCT.ID}</td>
-							<td>{PRODUCT.NAME}</td>
-							<td class="a_center">{PRODUCT.PRICE}</td>
-							<td class="a_center">{PRODUCT.DELIV}</td>
-						</tr>
-						<!-- END: row --> 
-					</table> 
-					 </td></tr>
-			<!-- END: server -->
-			<!-- КОНЕЦ результат с сервера N -->
-		</table>
-		<!-- BEGIN: error -->
-		<p class="error">Товары не найдены</p>
-		<!-- END: error --> 
-		</div>
+        <form id="search_form">
+            <table>
+                <tr>
+                    <td><input maxlength="50" required="" type="text" name="title" placeholder="Название товара..."></td>
+                    <td><input type="submit"  value="Найти"></td>
+                </tr>
+            </table>
+        </form>
+        <div id="product_list"></div>
+        </div>
 	</body>
 </html>
 <!-- END: main -->
