@@ -14,7 +14,12 @@ class SoapWorker
 	 * @var array 
 	 */
 	protected $pipes;
-
+	/**
+	 * идентификатор сервера
+	 * @var int 
+	 */
+	protected $id;
+	
 	/**
 	 * дочерний процесс
 	 * @var resource  
@@ -57,11 +62,13 @@ class SoapWorker
 
 	/**
 	 * Конструктор класса
+	 * @param int $id идентификатор сервера
 	 * @param string $wsdl uri wsdl
 	 * @param array $params параметры запроса
 	 */
-	public function __construct( $wsdl, array $params = array() )
+	public function __construct($id, $wsdl, array $params = array() )
 	{
+		$this->id = $id;
 		$this->wsdl = $wsdl;
 		$this->params = $params;
 	}
@@ -89,7 +96,13 @@ class SoapWorker
 		}
 		return $this->done ? true : false;
 	}
-
+	/**
+	 * Возвращает идентификатор 
+	 * @return int
+	 */
+	public function get_id(){
+		return $this->id;
+	}
 	/**
 	 * Возвращает флаг "данные получены"
 	 * @return boolean $value

@@ -5,6 +5,9 @@ $wsdl = '';
 $errors = array();
 $params = array();
 $data = false;
+$test = false;
+//if($test)
+	$arg['wsdl'] = 'http://www.avtoto.ru/?soap_server_test=get_wsdl&server_id=1';
 if (isset( $arg['wsdl'] ) && !empty( $arg['wsdl'] ))
 {
 	$wsdl = $arg['wsdl'];
@@ -20,20 +23,41 @@ if (isset( $arg['param'] ))
 
 if (!count( $errors ))
 {
-	try{
-		$client = new SoapClient( $wsdl );
-	
-	
-		if ($result = $client->SearchParts( $params ))
-		{
-			$data = json_encode( $result );
+	if($test){
+		$sleap_second = rand(1,3);
+		//sleep($sleap_second);
+		$result = array();
+		$result['Parts'] = array();
+		for($i=0;$i<rand(50,79);$i++){
+			$result['Parts'][] = array(
+				'Id'=>$i,
+				'Name'=>'Part_'.$i.'_from_server_1',
+				'Price'=>rand(500,1500),
+				'Deliv'=>sprintf('%d-%d',rand(1,8),rand(8,16))
+			);
 		}
-		else
-		{
-			$errors[] = 'server not answed';
+		$result['Info'] = array(
+			'SearchId'=>rand(9999,99999),
+			'Errors'=>array(),
+			'Logs'=>'Time = '.rand(2,12).' sec'
+		);
+		$data = json_encode( $result );
+	}
+	else{
+		try{
+			$client = new SoapClient( $wsdl );
+			if ($result = $client->SearchParts( $params ))
+			{
+				//print_r ( $result );
+				$data = json_encode( $result );
+			}
+			else
+			{
+				$errors[] = 'server not answed';
+			}
+		} catch (SoapFault $ex) {
+			$errors[] = 'error wsdl valid';
 		}
-	} catch (SoapFault $ex) {
-		$errors[] = 'error wsdl valid';
 	}
 	
 }
@@ -44,6 +68,6 @@ if (count($errors))
 	$data = json_encode( $answ );
 }
 
-//echo ( $data );
+
 echo base64_encode( $data );
 ?>

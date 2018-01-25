@@ -97,7 +97,7 @@ class AvtoToService
 	public function search_parts()
 	{
 
-		$product_items = array();
+		$servers = array();
 		if(!count($this->soap_worker_pool)){
 			$this->errors[] = 'Воркеры не найдены';
 		}
@@ -106,6 +106,12 @@ class AvtoToService
 		{
 			$soap_worker->set_php_path($this->php_path);
 			$soap_worker->start();
+			$servers[$soap_worker->get_id()] = array(
+				'time_start'=>microtime(1),
+				'time_work'=>0,
+				'errors'=>array(),
+				'items'=>array(),
+			);
 		}
 		$time_start = microtime( true );
         $termenate = false;
@@ -129,14 +135,16 @@ class AvtoToService
 					if ($soap_worker->is_done() && !$soap_worker->is_flush())
 					{
 						Loger::set_debug( 'worker is done ' . $soap_worker->get_wsdl() );
+						$servers[$soap_worker->get_id()]['time_work']=microtime(1)-$time_start;
 						if ($data = $soap_worker->get_result())
 						{
-							$product_items = array_merge( $product_items, $data );
+							$servers[$soap_worker->get_id()]['items']=$data;
 						}
 						else
 						{
 							if ($err = $soap_worker->get_errors())
 							{
+								$servers[$soap_worker->get_id()]['errors']=$err;
 								$this->errors = array_merge( $this->errors, $err );
 								Loger::set_error( 'Worker error' );
 								if($this->data_integrity)
@@ -175,8 +183,8 @@ class AvtoToService
 				$soap_worker->terminate();
 			}
 		}
-
-		return $product_items;
+		
+		return $servers;
 	}
 
 }
